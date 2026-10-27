@@ -1,0 +1,65 @@
+.hero { margin-bottom: 28px; }
+.hero h2 { margin: 0; font-size: 29px; }
+.hero p { margin: 7px 0 0; color: var(--muted); }
+
+.metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-bottom: 26px; }
+.metric { position: relative; min-height: 154px; padding: 25px; overflow: hidden; border: 1px solid #f0e6dc; border-radius: 20px; background: #fffdf9; box-shadow: 0 10px 28px rgb(16 38 74 / 5%); }
+.metric::after { content: ''; position: absolute; width: 90px; height: 90px; right: -28px; bottom: -38px; border-radius: 50%; background: currentColor; opacity: .1; }
+.metricIcon { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 16px; border-radius: 14px; background: currentColor; }
+.metricIcon svg { color: white; }
+.metric p { margin: 0; color: var(--muted); font-weight: 700; }
+.metric h2 { margin: 7px 0 0; font-size: 29px; color: var(--text); }
+.coral { color: #f4a66a; }
+.blue { color: #79b8cb; }
+.yellow { color: #e8ad2f; }
+.cream { color: #d89a67; }
+.green { color: #79a66b; }
+
+.card { margin-bottom: 26px; padding: 28px; border: 1px solid #f0e6dc; border-radius: 20px; background: #fffdf9; box-shadow: 0 10px 28px rgb(16 38 74 / 5%); }
+.cardHeading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; }
+.cardHeading h3 { margin: 0; font-size: 20px; }
+.cardHeading p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.cardHeading > span { padding: 6px 12px; border-radius: 99px; color: #397f98; background: #dceef3; font-size: 12px; font-weight: 800; }
+
+.table th { padding: 13px 14px; color: #5c6e88; background: #fff8e8; font-size: 13px; }
+.table th:first-child { border-radius: 12px 0 0 12px; }
+.table th:last-child { border-radius: 0 12px 12px 0; }
+.table td { padding: 13px 14px; }
+.person { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; }
+.person i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; color: #397f98; background: #dceef3; }
+.count { display: inline-grid; place-items: center; min-width: 31px; height: 31px; border-radius: 10px; color: #b87900; background: #fff0c8; }
+.minutes { color: #d66f3b; }
+.note { margin: 18px 0 0; padding: 12px 14px; border-radius: 12px; color: #7c672c; background: #fff8e8; font-size: 13px; }
+.charts { gap: 18px; }
+.charts .card { margin-bottom: 0; }
+.charts :global(.bar-track) { height: 12px; background: #edf3f5; }
+.charts :global(.bar-track i) { background: #f4a66a; }
+.charts :global(.bar-track i.bar-blue) { background: #79b8cb; }
+.insightGrid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; margin-top: 26px; }
+.insightGrid .card { margin-bottom: 0; }
+.weeklyChart { display: flex; align-items: flex-end; gap: 13px; height: 220px; padding: 12px 8px 0; border-bottom: 1px solid #eee7df; }
+.weeklyChart > div { display: grid; grid-template-rows: 22px 1fr 25px; flex: 1; height: 100%; text-align: center; }
+.weeklyChart b { color: #526681; font-size: 12px; }
+.weeklyChart > div > span { display: flex; align-items: flex-end; justify-content: center; min-height: 0; }
+.weeklyChart i { display: block; width: min(42px, 75%); min-height: 5px; border-radius: 10px 10px 3px 3px; background: linear-gradient(180deg, #f4a66a, #ffd77a); }
+.weeklyChart small { padding-top: 7px; color: #70819c; font-size: 11px; }
+.regionList { display: grid; gap: 18px; }
+.regionList > div { display: grid; grid-template-columns: 76px minmax(0, 1fr) 25px; gap: 12px; align-items: center; }
+.regionList strong, .regionList b { font-size: 13px; }
+.regionList > div > span { height: 11px; overflow: hidden; border-radius: 99px; background: #edf3f5; }
+.regionList i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #79b8cb, #bfdde6); }
+.regionList b { color: #d66f3b; text-align: right; }
+.noData { padding: 54px 10px; color: #70819c; text-align: center; }
+.roadmap { margin-top: 26px; }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); padding-top: 18px; }
+.steps > div { position: relative; padding: 26px 12px 8px; border-top: 4px solid #e6e9eb; text-align: center; }
+.steps > div::before { position: absolute; top: -11px; left: 50%; width: 18px; height: 18px; content: ''; transform: translateX(-50%); border: 3px solid #e6e9eb; border-radius: 50%; background: #fffdf9; }
+.steps .done, .steps .current { border-color: #79b8cb; }
+.steps .done::before { border-color: #79b8cb; background: #79b8cb; }
+.steps .current::before { border-color: #f4a66a; background: #fff8e8; }
+.steps b { display: grid; place-items: center; width: 28px; height: 28px; margin: 0 auto 8px; border-radius: 9px; background: #edf1f3; color: #70819c; font-size: 12px; }
+.steps .done b { background: #dceef3; color: #397f98; }.steps .current b { background: #fff0e5; color: #d66f3b; }
+.steps strong, .steps small { display: block; }.steps small { margin-top: 5px; color: #70819c; font-size: 11px; }
+
+@media (max-width: 1250px) { .metrics { grid-template-columns: repeat(2, 1fr); } .insightGrid { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .metrics { grid-template-columns: 1fr; } .metric { min-height: 132px; } .card { padding: 20px 16px; } .steps { grid-template-columns: 1fr; gap: 22px; }.steps > div { border-top: 0; border-left: 4px solid #e6e9eb; text-align: left; }.steps > div::before { top: 50%; left: -11px; transform: translateY(-50%); }.steps b { margin: 0 0 8px; } }

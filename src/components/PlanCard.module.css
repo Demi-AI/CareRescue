@@ -1,0 +1,57 @@
+.card {
+  position: relative;
+  padding: 28px 24px 18px;
+  border: 1px solid var(--normal);
+  border-radius: var(--card);
+  background: #fffdfb;
+  display: flex;
+  flex-direction: column;
+}
+.riskBadge { align-self: center; margin-top: -72px; margin-bottom: 29px; }
+.riskBadge span { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; font-size: 16px; line-height: 1.35; }
+.vehicle { position: absolute; top: 54px; right: 24px; color: #55a9c4; }
+.medium .vehicle { color: #f4a51f; }
+.high .vehicle { color: var(--urgent); }
+.planLabel { align-self: flex-start; padding: 7px 16px; border-radius: 20px; background: #5aa6c4; color: white; font-weight: 700; }
+.medium .planLabel { background: #f4a51f; }
+.high .planLabel { background: #f08258; }
+.medium {
+  border-color: #f4a51f;
+}
+.high {
+  border-color: var(--urgent);
+}
+.low {
+  border-color: #72bfd8;
+}
+.low .riskBadge span { background: #eaf6fa; color: #2c91b3; }
+.medium .riskBadge span { background: #fff5e3; color: #e38d00; }
+.high .riskBadge span { background: #fff0e9; color: var(--urgent); }
+.card h3 {
+  font-size: 25px;
+  margin: 14px 0 16px;
+}
+.caregiver { display: flex; align-items: center; gap: 12px; min-height: 58px; padding-bottom: 14px; }
+.avatar { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: #ffe7dc; color: var(--urgent); }
+.low .avatar { background: #e4f3f8; color: #4f9eb8; }
+.medium .avatar { background: #fff4d6; color: #e39a00; }
+.high .avatar { background: #ffe7dc; color: var(--urgent); }
+.caregiver strong { display: block; }
+.caregiver p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+.details {
+  flex: 1;
+  margin: 0 0 20px;
+}
+.detailRow { display: grid; grid-template-columns: 24px 112px minmax(0, 1fr); gap: 10px; align-items: start; padding: 20px 0; border-top: 1px solid var(--border); color: var(--text); line-height: 1.5; }
+.detailRow > svg { flex: none; color: var(--text); margin-top: 2px; }
+.detailRow small { color: var(--text); font-size: 14px; font-weight: 700; }
+.detailRow strong { text-align: right; font-size: 13px; font-weight: 500; }
+.accentValue, .riskValue { color: #2c91b3; }
+.accentValue { font-size: 16px !important; font-weight: 800 !important; }
+.medium .accentValue, .medium .riskValue { color: #e38d00; }
+.high .accentValue, .high .riskValue { color: var(--urgent); }
+.riskValue { display: block; margin-bottom: 3px; font-size: 15px; }
+.card button { width: 100%; border-radius: 8px; }
+.low button { background: #69b8d1; border-color: #69b8d1; color: white; }
+.medium button { border-color: #f4a51f; color: #e38d00; }
+.high button { border-color: var(--urgent); color: var(--urgent); }

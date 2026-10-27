@@ -1,0 +1,14 @@
+.meta { position: relative; display: flex; align-items: center; gap: 18px; color: var(--text); font-weight: 700; }
+.date { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.divider { width: 1px; height: 30px; background: var(--border); }
+.bell { position: relative; display: grid; place-items: center; padding: 5px; border: 0; color: var(--text); background: transparent; cursor: pointer; }
+.bell b { position: absolute; right: -4px; top: -5px; display: grid; place-items: center; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 99px; color: white; background: #f4a66a; font-size: 10px; }
+.popover { position: absolute; z-index: 20; top: calc(100% + 12px); right: 0; width: 320px; padding: 16px; border: 1px solid #e7e3de; border-radius: 16px; background: white; box-shadow: 0 18px 45px rgb(16 38 74 / 18%); }
+.popover > div { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.popover > div span { color: #c96332; font-size: 12px; }
+.popover p { display: flex; align-items: center; gap: 10px; margin: 0; padding: 12px 0; border-bottom: 1px solid var(--border); color: #397f98; }
+.popover p span { display: flex; flex-direction: column; color: var(--text); }
+.popover p small { margin-top: 2px; color: var(--muted); }
+.popover .empty { color: var(--muted); }
+.popover > a { display: block; padding-top: 12px; text-align: center; text-decoration: none; font-size: 13px; }
+@media (max-width: 700px) { .date { display: none; } .divider { display: none; } .popover { width: min(320px, calc(100vw - 32px)); } }

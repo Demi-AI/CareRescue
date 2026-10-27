@@ -1,0 +1,15 @@
+.dialog { width: min(620px, calc(100% - 32px)); padding: 0; overflow: hidden; border: 1px solid #eadfd4; border-radius: 22px; background: #fffdf9; box-shadow: 0 24px 70px rgb(16 38 74 / 22%); }
+.dialog::backdrop { background: rgb(16 38 74 / 35%); backdrop-filter: blur(3px); }
+.form { padding: 0 28px 28px; }
+.form header { display: flex; align-items: center; gap: 13px; margin: 0 -28px 24px; padding: 24px 28px; background: #fff0e6; }
+.form header > span { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 15px; color: #c96332; background: white; }
+.form header h2 { margin: 0; font-size: 24px; }
+.form header p { margin: 3px 0 0; color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.form input { border-radius: 12px; }
+.checks { display: flex; gap: 12px; margin: 8px 0 22px; }
+.checks label { display: flex; align-items: center; gap: 9px; flex: 1; padding: 13px; border-radius: 12px; background: #fff8e8; }
+.checks input { width: auto; margin: 0; }
+.actions { display: flex; justify-content: flex-end; gap: 10px; }
+.actions button { border-radius: 11px; padding: 11px 18px; }
+@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .checks { flex-direction: column; } }

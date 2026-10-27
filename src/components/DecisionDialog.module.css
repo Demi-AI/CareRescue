@@ -1,0 +1,101 @@
+.dialog {
+  width: min(680px, calc(100% - 32px));
+  max-width: 680px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #d8eaf2;
+  border-radius: 24px;
+  background: #fffdfb;
+  box-shadow: 0 24px 70px rgb(16 38 74 / 22%);
+}
+
+.dialog::backdrop {
+  background: rgb(16 38 74 / 38%);
+  backdrop-filter: blur(3px);
+}
+
+.form { padding: 0 32px 30px; }
+
+.header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin: 0 -32px 22px;
+  padding: 26px 32px 22px;
+  background: linear-gradient(135deg, #eef9fc, #fff8e8);
+  border-bottom: 1px solid #e5eef1;
+}
+
+.headerIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  color: #4ba5c4;
+  background: white;
+  box-shadow: 0 8px 20px rgb(75 165 196 / 18%);
+}
+
+.header h2 { margin: 2px 0 4px; font-size: 26px; }
+.header p { margin: 0; color: var(--muted); font-size: 14px; }
+.header .eyebrow { color: #4b9db8; font-size: 12px; font-weight: 800; letter-spacing: .08em; }
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 22px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #8c6500;
+  background: #fff8e8;
+  font-size: 14px;
+}
+
+.labelTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-weight: 800;
+}
+
+.form label { margin-bottom: 18px; }
+.form input,
+.form select,
+.form textarea {
+  margin-top: 9px;
+  border-color: #bfd5df;
+  border-radius: 12px;
+  background: white;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.form input,
+.form select { min-height: 50px; }
+.form textarea { min-height: 112px; resize: vertical; }
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #60b2cf;
+  box-shadow: 0 0 0 4px rgb(96 178 207 / 15%);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+.actions button { min-width: 128px; padding: 12px 20px; border-radius: 12px; font-weight: 800; }
+.cancel { border-color: #b8d8e5 !important; color: #3e8fac !important; }
+.confirm { border-color: #65b8d2 !important; background: #65b8d2 !important; }
+
+@media (max-width: 600px) {
+  .form { padding: 0 20px 22px; }
+  .header { margin-inline: -20px; padding: 22px 20px 18px; }
+  .actions { flex-direction: column-reverse; }
+  .actions button { width: 100%; }
+}
