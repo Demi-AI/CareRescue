@@ -5,6 +5,7 @@ import Icon from '../components/Icon';
 import PageHeader from '../components/PageHeader';
 import { useApp } from '../context/AppContext';
 import { time as formatTime } from '../utils/format';
+import { leaveAffectsShift } from '../utils/schedule';
 import styles from './LeavePage.module.css';
 
 export default function LeaveReviewPage() {
@@ -30,12 +31,26 @@ export default function LeaveReviewPage() {
       <div className={styles.reviewGrid}>
         {requests.map((request) => {
           const caregiver = data.caregivers.find((item) => item.id === request.caregiverId);
-          const affected = data.shifts.filter((shift) => shift.caregiverId === request.caregiverId && shift.start < request.end && shift.end > request.start && shift.status !== 'cancelled').length;
+          const affected = (data.weeklyShifts || data.shifts).filter((shift) =>
+            shift.caregiverId === request.caregiverId &&
+            shift.status !== 'cancelled' &&
+            leaveAffectsShift(request, shift),
+          );
           return <article className={styles.request} key={request.id}>
-            <div className={styles.requestTop}><strong>{caregiver?.name || request.caregiverId}</strong><span className={`${styles.status} ${styles[request.status]}`}>{request.status === 'pending' ? '待審核' : request.status === 'approved' ? '已核准' : '已退回'}</span></div>
+            <div className={styles.requestTop}><strong>{caregiver?.name || request.caregiverId}</strong><div className={styles.requestTags}><em>模擬排班</em><span className={`${styles.status} ${styles[request.status]}`}>{request.status === 'pending' ? '待審核' : request.status === 'approved' ? '已核准' : '已退回'}</span></div></div>
             <p>{request.date}{request.endDate && request.endDate !== request.date ? `～${request.endDate}` : ''}　{formatTime(request.start)}–{formatTime(request.end)}　{request.type}</p>
             <p className={styles.reason}>{request.reason}</p>
-            <div className={styles.impact}>{request.urgent && <b>緊急</b>}預估影響 {affected} 個班次</div>
+            <div className={styles.impact}>{request.urgent && <b>緊急</b>}預估影響 {affected.length} 個班次</div>
+            {!!affected.length && <details className={styles.affectedDetails}>
+              <summary>查看 {affected.length} 筆受影響班次</summary>
+              <div className={styles.affectedList}>
+                {affected.map((shift) => <div key={shift.id}>
+                  <span>星期{['', '一', '二', '三', '四', '五', '六', '日'][shift.weekday || 0]}　{formatTime(shift.start)}–{formatTime(shift.end)}</span>
+                  <strong>個案 {shift.clientId}</strong>
+                  <small>{shift.district}</small>
+                </div>)}
+              </div>
+            </details>}
             {request.status === 'pending' && <div className={styles.actions}><Button onClick={() => review(request.id, 'rejected')}>退回</Button><Button variant="primary" onClick={() => review(request.id, 'approved')}>核准並建立異動</Button></div>}
           </article>;
         })}

@@ -16,6 +16,7 @@ export interface Shift {
   clientName?: string;
   address?: string;
   serviceItems?: string;
+  assignmentSource?: 'simulated' | 'actual';
 }
 export interface Caregiver {
   id: string;
@@ -126,7 +127,7 @@ export interface Notification {
   attempts?: number;
 }
 export interface AppData {
-  version: 2;
+  version: 5;
   shifts: Shift[];
   weeklyShifts?: Shift[];
   caregivers: Caregiver[];

@@ -9,12 +9,14 @@ import DecisionDialog from '../components/DecisionDialog';
 import Icon from '../components/Icon';
 import HeaderMeta from '../components/HeaderMeta';
 import ConditionDialog from '../components/ConditionDialog';
+import ManualAssignDialog from '../components/ManualAssignDialog';
 export default function PlanComparisonPage() {
   const { shiftId } = useParams();
   const { data, updateShift } = useApp();
   const navigate = useNavigate();
   const [selected, setSelected] = useState<Plan | null>(null);
   const [editing, setEditing] = useState(false);
+  const [manual, setManual] = useState(false);
   const shift = data.shifts.find((s) => s.id === shiftId);
   if (!shift)
     return (
@@ -50,6 +52,11 @@ export default function PlanComparisonPage() {
               <PlanCard key={p.id} plan={p} onSelect={setSelected} />
             ))}
           </div>
+          <section className="manual-plan">
+            <span><Icon name="users" size={26} /></span>
+            <div><strong>其他｜督導自行安排</strong><p>由督導指定其他照服員，系統仍會檢查配對排除、資格及時間衝突。</p></div>
+            <button type="button" className="outline-action" onClick={() => setManual(true)}>自行安排人員</button>
+          </section>
           {!result.plans.length && (
             <section className="panel">
               目前無可行方案，請查看排除原因並人工協調。
@@ -67,6 +74,7 @@ export default function PlanComparisonPage() {
         />
       )}
       {editing && <ConditionDialog shift={shift} onClose={() => setEditing(false)} onSave={(updates) => { updateShift(shift.id, updates); setEditing(false); }} />}
+      {manual && <ManualAssignDialog shift={shift} onClose={() => setManual(false)} onDone={() => navigate('/records')} />}
     </>
   );
 }

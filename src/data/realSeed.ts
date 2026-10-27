@@ -60,7 +60,7 @@ const caregivers: Caregiver[] = raw.e.map((row) => {
 });
 
 const weekday: Record<string, number> = { 星期一: 1, 星期二: 2, 星期三: 3, 星期四: 4, 星期五: 5, 星期六: 6, 星期日: 7 };
-const weeklyShifts: Shift[] = raw.s.map((row, index) => {
+const unassignedWeeklyShifts: Shift[] = raw.s.map((row, index) => {
   const clientId = value(row[0]) || identityToClient.get(value(row[1])) || "UNLINKED-" + String(index + 1).padStart(3, "0");
   return {
     id: "WEEK-" + String(index + 1).padStart(4, "0"),
@@ -82,6 +82,40 @@ const weeklyShifts: Shift[] = raw.s.map((row, index) => {
   };
 });
 
+// 原始服務計畫沒有服務員欄位。以下用固定規則建立展示用分派：
+// 優先延續同一個案、同區域、避免同日時間重疊，最後平衡每人總工時。
+const assignedMinutes = new Map(caregivers.map((person) => [person.id, 0]));
+const assignedByDay = new Map<string, Shift[]>();
+const preferredCaregiver = new Map<string, string>();
+const leaveCaregiverIds = new Set(raw.l.map((row) => value(row[0])));
+const caregiverOrder = [...caregivers].sort((a, b) => {
+  const leaveDifference = Number(leaveCaregiverIds.has(b.id)) - Number(leaveCaregiverIds.has(a.id));
+  return leaveDifference || a.id.localeCompare(b.id);
+});
+
+const weeklyShifts: Shift[] = unassignedWeeklyShifts.map((shift) => {
+  const candidates = caregiverOrder.filter((person) => {
+    const dayAssignments = assignedByDay.get(`${person.id}-${shift.weekday}`) || [];
+    return !dayAssignments.some((item) => item.start < shift.end && item.end > shift.start);
+  });
+  const pool = candidates.length ? candidates : caregiverOrder;
+  const selected = [...pool].sort((a, b) => {
+    const score = (person: Caregiver) =>
+      (preferredCaregiver.get(shift.clientId) === person.id ? 100000 : 0) +
+      (person.district === shift.district ? 10000 : 0) +
+      (person.transport?.includes("機車") ? 500 : 0) -
+      (assignedMinutes.get(person.id) || 0);
+    return score(b) - score(a) || a.id.localeCompare(b.id);
+  })[0];
+  if (!selected) return shift;
+  const assigned = { ...shift, caregiverId: selected.id, familiarIds: [selected.id], assignmentSource: "simulated" as const };
+  assignedMinutes.set(selected.id, (assignedMinutes.get(selected.id) || 0) + shift.end - shift.start);
+  const key = `${selected.id}-${shift.weekday}`;
+  assignedByDay.set(key, [...(assignedByDay.get(key) || []), assigned]);
+  if (!preferredCaregiver.has(shift.clientId)) preferredCaregiver.set(shift.clientId, selected.id);
+  return assigned;
+});
+
 const leaveRequests: LeaveRequest[] = raw.l.map((row, index) => {
   const times = value(row[3]).match(/\d{1,2}:\d{2}/g) || [];
   return {
@@ -89,8 +123,8 @@ const leaveRequests: LeaveRequest[] = raw.l.map((row, index) => {
     caregiverId: value(row[0]),
     date: value(row[1]).slice(0, 10),
     endDate: value(row[2]).slice(0, 10),
-    start: minutes(times[0]),
-    end: minutes(times[1]),
+    start: value(row[1]).slice(0, 10) === value(row[2]).slice(0, 10) && minutes(times[1]) <= minutes(times[0]) ? 0 : minutes(times[0]),
+    end: value(row[1]).slice(0, 10) === value(row[2]).slice(0, 10) && minutes(times[1]) <= minutes(times[0]) ? 1440 : minutes(times[1]),
     type: value(row[4]) || "請假",
     reason: value(row[5]) || value(row[6]) || "未填寫",
     createdAt: value(row[7]).replace(" ", "T"),
@@ -99,12 +133,21 @@ const leaveRequests: LeaveRequest[] = raw.l.map((row, index) => {
   };
 });
 
+const currentWeekday = new Date().getDay() || 7;
+const simulatedCaregivers = caregivers.map((person) => ({
+  ...person,
+  workMinutes: weeklyShifts
+    .filter((shift) => shift.weekday === currentWeekday && shift.caregiverId === person.id)
+    .reduce((total, shift) => total + shift.end - shift.start, 0),
+}));
+
 export const realSeed: AppData = {
-  version: 2,
+  version: 5,
   clients,
-  caregivers,
+  caregivers: simulatedCaregivers,
   shifts: weeklyShifts
-    .filter((shift) => shift.weekday === (new Date().getDay() || 7))
+    .filter((shift) => shift.weekday === currentWeekday)
+    .slice(0, 45)
     .map((shift, index) => index < 3 ? { ...shift, id: `S-${shift.id}` } : shift),
   weeklyShifts,
   leaveRequests,

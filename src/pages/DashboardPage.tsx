@@ -8,6 +8,7 @@ import StatusBadge from '../components/StatusBadge';
 import { useApp } from '../context/AppContext';
 import { prioritized } from '../services/rescueEngine';
 import { time } from '../utils/format';
+import { leaveAffectsShift } from '../utils/schedule';
 import styles from './DashboardPage.module.css';
 
 const eventLabels = { leave: '臨時請假', delay: '服務延誤', stop: '臨時停服', hospital: '個案送醫', change: '需求變更' };
@@ -25,9 +26,14 @@ export default function DashboardPage() {
   const todayShifts = data.shifts.filter((shift) => shift.status !== 'cancelled');
   const available = data.caregivers.filter((caregiver) => caregiver.available);
   const pendingLeave = data.leaveRequests.filter((request) => request.status === 'pending');
-  const latestLeave = pendingLeave[0];
+  const weeklyShifts = data.weeklyShifts || data.shifts;
+  const affectedCount = (request: (typeof pendingLeave)[number]) => weeklyShifts.filter((shift) => shift.caregiverId === request.caregiverId && shift.status !== 'cancelled' && leaveAffectsShift(request, shift)).length;
+  const isTravelLeave = (request: (typeof pendingLeave)[number]) => /出國|旅遊|遊玩/.test(`${request.type}${request.reason}`);
+  const latestLeave = pendingLeave.find((request) => !isTravelLeave(request) && affectedCount(request) > 0)
+    || pendingLeave.find((request) => affectedCount(request) > 0)
+    || pendingLeave[0];
   const leaveCaregiver = data.caregivers.find((caregiver) => caregiver.id === latestLeave?.caregiverId);
-  const leaveAffected = latestLeave ? data.shifts.filter((shift) => shift.caregiverId === latestLeave.caregiverId && shift.status !== 'cancelled' && shift.start < latestLeave.end && shift.end > latestLeave.start).length : 0;
+  const leaveAffected = latestLeave ? affectedCount(latestLeave) : 0;
   const totalCapacity = data.caregivers.reduce((sum, caregiver) => sum + caregiver.maxMinutes, 0);
   const usedCapacity = data.caregivers.reduce((sum, caregiver) => sum + caregiver.workMinutes, 0);
   const capacityRate = totalCapacity ? Math.round(usedCapacity / totalCapacity * 100) : 0;

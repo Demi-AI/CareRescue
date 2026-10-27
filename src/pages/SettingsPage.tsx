@@ -42,8 +42,8 @@ export default function SettingsPage() {
         <div className={styles.cardHeading}><span><Icon name="clipboard" size={21} /></span><div><h3>資料來源與驗證狀態</h3><p>清楚區分目前資料與未來介接內容。</p></div></div>
         <div className={styles.sourceGrid}>
           <article className={styles.blue}><Icon name="clipboard" size={23} /><strong>目前資料</strong><p>新北站去識別化個案、員工、週服務計畫與請假資料。</p></article>
-          <article className={styles.yellow}><Icon name="arrow" size={23} /><strong>尚缺資料</strong><p>週服務計畫未提供服務員配對，無法連結個別照服員班表。</p></article>
-          <article className={styles.cream}><Icon name="settings" size={23} /><strong>目前階段</strong><p>情境原型與規則驗證。</p></article>
+          <article className={styles.yellow}><Icon name="arrow" size={23} /><strong>模擬分派</strong><p>原始週服務計畫未提供服務員配對，目前依區域、時間與工時建立展示用分派。</p></article>
+          <article className={styles.cream}><Icon name="settings" size={23} /><strong>目前階段</strong><p>使用模擬排班驗證臨時請假與補位流程。</p></article>
           <article className={styles.coral}><Icon name="chart" size={23} /><strong>下一階段</strong><p>實務模擬、居督回饋與小規模試辦。</p></article>
         </div>
       </section>

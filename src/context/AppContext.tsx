@@ -15,14 +15,14 @@ import type {
 import { createSeed } from '../data/seed';
 import { generatePlans } from '../services/rescueEngine';
 import { leaveAffectsShift, sameServiceDay } from '../utils/schedule';
-const KEY = 'carerescue-real-v2';
+const KEY = 'carerescue-real-v5';
 function load(): AppData {
   try {
     const raw = localStorage.getItem(KEY);
     if (raw) {
       const value = JSON.parse(raw);
       if (
-        value.version === 2 &&
+        value.version === 5 &&
         Array.isArray(value.shifts) &&
         Array.isArray(value.caregivers) &&
         Array.isArray(value.events) &&
@@ -206,17 +206,27 @@ export function AppProvider({ children }: { children: ReactNode }) {
       save({ ...data, leaveRequests: data.leaveRequests.map((item) => item.id === id ? { ...item, status } : item) });
       return;
     }
-    const affected = data.shifts.filter((shift) =>
+    const sourceShifts = data.weeklyShifts || data.shifts;
+    const affected = sourceShifts.filter((shift) =>
       shift.caregiverId === request.caregiverId &&
       shift.status !== 'cancelled' && shift.status !== 'completed' &&
       leaveAffectsShift(request, shift),
     );
+    const affectedIds = new Set(affected.map((item) => item.id));
+    const activeIds = new Set(data.shifts.map((item) => item.id));
+    const newlyAffected = affected
+      .filter((item) => !activeIds.has(item.id))
+      .map((item) => ({ ...item, status: 'pending' as const }));
     const eventId = crypto.randomUUID();
     save({
       ...data,
       leaveRequests: data.leaveRequests.map((item) => item.id === id ? { ...item, status } : item),
       caregivers: data.caregivers.map((caregiver) => caregiver.id === request.caregiverId ? { ...caregiver, available: false } : caregiver),
-      shifts: data.shifts.map((shift) => affected.some((item) => item.id === shift.id) ? { ...shift, status: 'pending' } : shift),
+      shifts: [
+        ...data.shifts.map((shift) => affectedIds.has(shift.id) ? { ...shift, status: 'pending' as const } : shift),
+        ...newlyAffected,
+      ],
+      weeklyShifts: sourceShifts.map((shift) => affectedIds.has(shift.id) ? { ...shift, status: 'pending' as const } : shift),
       events: [{ id: eventId, type: 'leave', caregiverId: request.caregiverId, delayMinutes: 0, reason: request.reason || request.type, createdAt: new Date().toISOString(), affectedIds: affected.map((item) => item.id) }, ...data.events],
     });
   }
