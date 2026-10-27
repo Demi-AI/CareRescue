@@ -22,11 +22,19 @@
 .empty { grid-column: 1 / -1; padding: 50px 20px; color: #70819c; text-align: center; }
 .request { padding: 18px; border: 1px solid #eee5dc; border-radius: 16px; background: #fff; }
 .requestTop { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+.requestTags { display: flex; align-items: center; gap: 8px; }
+.requestTags em { padding: 4px 9px; border-radius: 99px; background: #eaf5f8; color: #397f98; font-size: 12px; font-style: normal; font-weight: 700; }
 .request p { margin: 7px 0; color: #526681; }
 .reason { font-size: 14px; }
 .status { padding: 5px 11px; border-radius: 99px; font-size: 12px; font-weight: 800; }
 .pending { color: #c47d00; background: #fff4d8; }.approved { color: #26849e; background: #e8f6fa; }.rejected { color: #c55235; background: #fff0e8; }
 .impact { margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: #fff8e8; color: #9a7117; font-size: 13px; }.impact b { margin-right: 8px; color: #ef643f; }
+.affectedDetails { margin-top: 9px; }
+.affectedDetails summary { width: fit-content; cursor: pointer; color: #397f98; font-size: 13px; font-weight: 800; }
+.affectedList { display: grid; gap: 7px; margin-top: 9px; }
+.affectedList > div { display: grid; grid-template-columns: 1.4fr 1fr .7fr; gap: 10px; align-items: center; padding: 9px 12px; border: 1px solid #e8edf0; border-radius: 10px; background: #f8fbfc; color: #526681; font-size: 13px; }
+.affectedList strong { color: #10294e; }
+.affectedList small { text-align: right; color: #71839d; }
 .actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 14px; }
 .toast { position: fixed; right: 26px; bottom: 26px; z-index: 20; display: flex; gap: 20px; align-items: center; padding: 14px 18px; border-radius: 14px; background: #10264a; color: white; box-shadow: 0 12px 30px #10264a40; }
 .toast button { border: 0; background: transparent; color: white; font-size: 22px; cursor: pointer; }
